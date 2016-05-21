@@ -1,10 +1,17 @@
 var http = require('http')
 
-var cb = (resp) => {
-	resp.setEncoding('utf-8')
-	
-	resp.on('data', (data) => {
-		console.log(data)
+var str = ''
+
+var cb = (res) => {
+	res.setEncoding('utf-8')
+
+	res.on('data', (data) => {
+		str += data
+	})
+
+	res.on('end', () => {
+		console.log(str.length)
+		console.log(str)
 	})
 }
 
