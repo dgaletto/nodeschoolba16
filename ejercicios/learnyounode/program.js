@@ -1,9 +1,7 @@
-var args = process.argv
-var len = args.length
-var sum = 0
+var fs = require('fs')
+var arg = process.argv[2]
 
-for (var i = 2; i <= len-1 ; i++) {
-	sum+= Number(args[i])
-}
-
-console.log(sum)
+let fsBuffer = fs.readFileSync(arg)
+let fsStr = fsBuffer.toString()
+let newlines = fsStr.split('\n').length
+console.log(newlines - 1 )
