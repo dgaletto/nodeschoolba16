@@ -1,17 +1,11 @@
-var filterext = require('./filterext')
+var http = require('http')
 
-var dir = process.argv[2]
-var ext = process.argv[3]
-
-var print = (err, list) => {
-	if(err){
-		console.error(err)
-		return
-	}
-
-	list.forEach(
-		(file)=> { console.log(file) }
-	)
+var cb = (resp) => {
+	resp.setEncoding('utf-8')
+	
+	resp.on('data', (data) => {
+		console.log(data)
+	})
 }
 
-filterext(dir, ext, print)
+http.get(process.argv[2], cb)
