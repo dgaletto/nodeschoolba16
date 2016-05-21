@@ -1,11 +1,22 @@
 var fs = require('fs')
-var arg = process.argv[2]
+var path = require('path')
 
-var countLines = (err, data) => {
-	let newlines = data.toString().split('\n').length
-	console.log(newlines - 1 )
+var dir = process.argv[2]
+var ext = process.argv[3]
+
+var filterByExt = (err, list) => {
+
+	filteredList = list.filter(
+		(file) => {
+			if(path.extname(file) == '.'+ext){
+				console.log(file)
+				return true
+			}
+			
+			return false
+		}
+		)
+	
 }
 
-fs.readFile(arg, countLines)
-
-
+fs.readdir(dir, filterByExt)
