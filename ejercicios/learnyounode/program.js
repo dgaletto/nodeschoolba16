@@ -2,30 +2,61 @@ var http = require('http')
 var bl = require('bl')
 
 var str = ''
+var contador = 0
+var result = [null, null, null]
 
-/*var cb = (res) => {
-	res.setEncoding('utf-8')
-
-	res.on('data', (data) => {
-		str += data
-	})
-
-	res.on('end', () => {
-		console.log(str.length)
-		console.log(str)
-	})
-}*/
+var contar = () => {
+	contador++
+	if(contador == 3)
+	{
+		result.forEach((url) => {
+			console.log(url)
+		})
+	}
+}
 
 
-var cb = (res) => {
+var request1 = (res) => {
 
 	res.pipe(bl((err, data)=>{
 		if(err) return console.error(err)
 
 		let str = data.toString()
-		console.log(str.length)
-		console.log(str)
+
+		result[0] = str
+
+		contar()
 	}))
 }
 
-http.get(process.argv[2], cb)
+var request2 = (res) => {
+
+	res.pipe(bl((err, data)=>{
+		if(err) return console.error(err)
+
+		let str = data.toString()
+
+		result[1] = str
+
+		contar()
+	}))
+}
+
+var request3 = (res) => {
+
+	res.pipe(bl((err, data)=>{
+		if(err) return console.error(err)
+
+		let str = data.toString()
+
+		result[2] = str
+
+		contar()
+	}))
+}
+
+
+
+http.get(process.argv[2], request1)
+http.get(process.argv[3], request2)
+http.get(process.argv[4], request3)
