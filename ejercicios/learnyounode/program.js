@@ -1,62 +1,23 @@
-var http = require('http')
-var bl = require('bl')
+var net = require('net')
+var server = net.createServer((socket) => {
+	socket.write(fecha() + '\n')
+	socket.end()
+});
 
-var str = ''
-var contador = 0
-var result = [null, null, null]
 
-var contar = () => {
-	contador++
-	if(contador == 3)
-	{
-		result.forEach((url) => {
-			console.log(url)
-		})
-	}
+var fecha = ()=>{
+	var d = new Date()
+	var fecha = d.getFullYear() 
+	+ '-' 
+	+ ("00" + (d.getMonth() + 1)).slice(-2) 
+	+ '-'
+	+ ("00" + d.getDate()).slice(-2)
+	+ ' '
+	+ ("00" + d.getHours()).slice(-2) + ":"
+	+ ("00" + d.getMinutes()).slice(-2)
+
+	return fecha
 }
 
 
-var request1 = (res) => {
-
-	res.pipe(bl((err, data)=>{
-		if(err) return console.error(err)
-
-		let str = data.toString()
-
-		result[0] = str
-
-		contar()
-	}))
-}
-
-var request2 = (res) => {
-
-	res.pipe(bl((err, data)=>{
-		if(err) return console.error(err)
-
-		let str = data.toString()
-
-		result[1] = str
-
-		contar()
-	}))
-}
-
-var request3 = (res) => {
-
-	res.pipe(bl((err, data)=>{
-		if(err) return console.error(err)
-
-		let str = data.toString()
-
-		result[2] = str
-
-		contar()
-	}))
-}
-
-
-
-http.get(process.argv[2], request1)
-http.get(process.argv[3], request2)
-http.get(process.argv[4], request3)
+server.listen(process.argv[2])
