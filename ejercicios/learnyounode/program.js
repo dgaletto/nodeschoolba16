@@ -1,7 +1,11 @@
 var fs = require('fs')
 var arg = process.argv[2]
 
-let fsBuffer = fs.readFileSync(arg)
-let fsStr = fsBuffer.toString()
-let newlines = fsStr.split('\n').length
-console.log(newlines - 1 )
+var countLines = (err, data) => {
+	let newlines = data.toString().split('\n').length
+	console.log(newlines - 1 )
+}
+
+fs.readFile(arg, countLines)
+
+
